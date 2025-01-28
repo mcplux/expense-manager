@@ -1,9 +1,11 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import DatePicker from 'react-date-picker'
 import { categories } from '../data/categories'
 import 'react-calendar/dist/Calendar.css'
 import 'react-date-picker/dist/DatePicker.css'
 import { DraftExpense, Value } from '../types'
+import ErrorMessage from './ErrorMessage'
+import { useBudget } from '../hooks/useBudget'
 
 function ExpenseForm() {
   const [expense, setExpense] = useState<DraftExpense>({
@@ -12,6 +14,10 @@ function ExpenseForm() {
     category: '',
     date: new Date(),
   })
+
+  const [error, setError] = useState('')
+
+  const { dispatch } = useBudget()
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
@@ -29,11 +35,34 @@ function ExpenseForm() {
     setExpense({ ...expense, date: value })
   }
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    // Validation
+    if (Object.values(expense).includes('')) {
+      setError('All fields are required')
+      return
+    }
+
+    dispatch({ type: 'add-expense', payload: { expense } })
+
+    setExpense({
+      amount: 0,
+      name: '',
+      category: '',
+      date: new Date(),
+    })
+
+    setError('')
+  }
+
   return (
-    <form className="space-y-5">
+    <form className="space-y-5" onSubmit={handleSubmit}>
       <legend className="uppercase text-center text-xl font-black border-b-4 border-blue-500 ">
         New Expense
       </legend>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
 
       <div className="flex flex-col gap-2 ">
         <label htmlFor="name" className="text-xl">
