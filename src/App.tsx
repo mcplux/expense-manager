@@ -1,6 +1,10 @@
 import BudgetForm from './components/BudgetForm'
+import { useBudget } from './hooks/useBudget'
 
 function App() {
+  const context = useBudget()
+
+  console.log(context)
   return (
     <>
       <header className="bg-blue-600 py-8 max-h-72">
