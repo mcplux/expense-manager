@@ -41,7 +41,13 @@ function ExpenseDetail({ expense }: ExpenseDetailProps) {
 
   const trailingActions = () => (
     <TrailingActions>
-      <SwipeAction onClick={() => {}}>Update</SwipeAction>
+      <SwipeAction
+        onClick={() =>
+          dispatch({ type: 'get-expense-by-id', payload: { id: expense.id } })
+        }
+      >
+        Edit
+      </SwipeAction>
     </TrailingActions>
   )
 
