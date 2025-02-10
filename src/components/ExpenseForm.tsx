@@ -16,8 +16,9 @@ function ExpenseForm() {
   })
 
   const [error, setError] = useState('')
+  const [previousAmount, setPreviousAmount] = useState(0)
 
-  const { state, dispatch } = useBudget()
+  const { state, dispatch, remainingBudget } = useBudget()
 
   useEffect(() => {
     if (state.editingId) {
@@ -26,6 +27,7 @@ function ExpenseForm() {
       )
       if (editingExpense) {
         setExpense(editingExpense)
+        setPreviousAmount(editingExpense.amount)
       }
     }
   }, [state])
@@ -55,6 +57,11 @@ function ExpenseForm() {
       return
     }
 
+    if (expense.amount - previousAmount > remainingBudget) {
+      setError('This expense is out of the budget')
+      return
+    }
+
     if (state.editingId) {
       dispatch({
         type: 'update-expense',
@@ -70,7 +77,7 @@ function ExpenseForm() {
       category: '',
       date: new Date(),
     })
-
+    setPreviousAmount(0)
     setError('')
   }
 
