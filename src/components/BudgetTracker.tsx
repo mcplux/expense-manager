@@ -1,6 +1,9 @@
+import { useBudget } from '../hooks/useBudget'
 import AmountDisplay from './AmountDisplay'
 
 function BudgetTracker() {
+  const { state, remainingBudget, totalExpenses } = useBudget()
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div className="flex justify-center">
@@ -14,9 +17,9 @@ function BudgetTracker() {
           Reset App
         </button>
 
-        <AmountDisplay label="Budget" amount={300} />
-        <AmountDisplay label="Remaining" amount={200} />
-        <AmountDisplay label="Spent" amount={100} />
+        <AmountDisplay label="Budget" amount={state.budget} />
+        <AmountDisplay label="Remaining" amount={remainingBudget} />
+        <AmountDisplay label="Spent" amount={totalExpenses} />
       </div>
     </div>
   )
