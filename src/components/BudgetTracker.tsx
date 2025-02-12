@@ -5,7 +5,7 @@ import AmountDisplay from './AmountDisplay'
 import 'react-circular-progressbar/dist/styles.css'
 
 function BudgetTracker() {
-  const { state, remainingBudget, totalExpenses } = useBudget()
+  const { state, dispatch, remainingBudget, totalExpenses } = useBudget()
 
   const percentageRemainingBudget = +(
     (remainingBudget * 100) /
@@ -30,6 +30,7 @@ function BudgetTracker() {
         <button
           type="button"
           className="bg-pink-600 w-full p-2 text-white uppercase font-bold rounded-lg"
+          onClick={() => dispatch({ type: 'reset-app' })}
         >
           Reset App
         </button>

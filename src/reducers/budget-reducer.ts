@@ -28,6 +28,9 @@ export type BudgetActions =
       type: 'update-expense'
       payload: { expense: Expense }
     }
+  | {
+      type: 'reset-app'
+    }
 
 export interface BudgetState {
   budget: number
@@ -116,6 +119,14 @@ export const budgetReducer = (
       ),
       modal: false,
       editingId: '',
+    }
+  }
+
+  if (action.type === 'reset-app') {
+    return {
+      ...state,
+      budget: 0,
+      expenses: [],
     }
   }
 
